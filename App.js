@@ -35,7 +35,7 @@ export default function App() {
       <View style={styles.header}>
         <TouchableOpacity onPress={work}>
           <Text
-            style={{ ...styles.btnText, color: working ? "white" : theme.gray }}
+            style={{ ...styles.btnText, color: working ? "white" : theme.grey }}
           >
             Work
           </Text>
@@ -44,7 +44,7 @@ export default function App() {
           <Text
             style={{
               ...styles.btnText,
-              color: !working ? "white" : theme.gray,
+              color: !working ? "white" : theme.grey,
             }}
           >
             Travel
@@ -63,7 +63,7 @@ export default function App() {
         <ScrollView>
           {Object.keys(toDos).map((key) => (
             <View style={styles.toDo} key={key}>
-              <Text style={styles.toDoText}>{toDos[key.text]}</Text>
+              <Text style={styles.toDoText}>{toDos[key].text}</Text>
             </View>
           ))}
         </ScrollView>
@@ -97,14 +97,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   toDo: {
-    backgroundColor:theme.toDoBg,
-    marginBottom:10,
-    paddingVertical:20,
-    paddingHorizontal:40,
-    borderRadius:20,
+    backgroundColor: theme.grey,
+    marginBottom: 10,
+    paddingVertical: 20,
+    paddingHorizontal: 40,
+    borderRadius: 20,
   },
   toDoText: {
-    color:"white",
-    fontSize:16,
+    color: "white",
+    fontSize: 16,
+    fontWeight: "500",
   },
 });
