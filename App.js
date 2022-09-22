@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Alert,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { theme } from "./colors";
@@ -26,10 +27,14 @@ export default function App() {
   const saveToDos = async (toSave) => {
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
   };
+
+  // toDo 로드
   const loadToDos = async () => {
     const s = await AsyncStorage.getItem(STORAGE_KEY);
     setToDos(JSON.parse(s));
   };
+
+  // toDo추가
   const addToDo = async () => {
     if (text === "") {
       return;
@@ -43,6 +48,24 @@ export default function App() {
     await saveToDos(newToDos);
     setText("");
   };
+
+  // toDo 지우기
+  const deleteToDo = async (key) => {
+    Alert.alert("Delete To Do", "Are you sure?", [
+      { text: "Canecl" },
+      {
+        text: "I'm Sure",
+        style:"destructive",
+        onPress: () => {
+          const newToDos = { ...toDos };
+          delete newToDos[key];
+          setToDos(newToDos);
+          saveToDos(newToDos);
+        },
+      },
+    ]);
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -79,6 +102,9 @@ export default function App() {
             toDos[key].working === working ? (
               <View style={styles.toDo} key={key}>
                 <Text style={styles.toDoText}>{toDos[key].text}</Text>
+                <TouchableOpacity onPress={() => deleteToDo(key)}>
+                  <Text style={styles.deleteBtn}>X</Text>
+                </TouchableOpacity>
               </View>
             ) : null
           )}
@@ -118,10 +144,17 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 40,
     borderRadius: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   toDoText: {
     color: "white",
     fontSize: 16,
     fontWeight: "500",
   },
+  deleteBtn:{
+    fontSize:20  ,
+    color:"red",
+  }
 });
