@@ -1,37 +1,42 @@
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-  Alert,
+  StyleSheet /* React Native APIs */,
+  Text /* React Native Components */,
+  View /* React Native Components */,
+  TouchableOpacity /* React Native Components */,
+  TextInput /* React Native Components */,
+  ScrollView /* React Native Components */,
+  Alert /* React Native APIs */,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage"; /* expo SDK */
 import { theme } from "./colors";
 
-const STORAGE_KEY = "@toDos";
+const STORAGE_KEY = "@toDos"; /* 스토리지 key name */
 
 export default function App() {
-  const [working, setWorking] = useState(true);
-  const [text, setText] = useState("");
-  const [toDos, setToDos] = useState({});
+  const [working, setWorking] = useState(true); /* 누른 탭 확인 */
+  const [text, setText] = useState(""); /* 입력한 text 업데이트 */
+  const [toDos, setToDos] = useState({}); /* 투두리스트 */
   useEffect(() => {
     loadToDos();
-  }, []);
-  const travel = () => setWorking(false);
-  const work = () => setWorking(true);
-  const onChangeText = (payload) => setText(payload);
+  }, []); /* 로드 된 투두리스트 기억 */
+  const travel = () => setWorking(false); /* 누르지 않은 탭 */
+  const work = () => setWorking(true); /* 누른 탭 */
+  const onChangeText = (payload) => setText(payload); /* 입력한 text를 payload라는 인자로 받았다 */
   const saveToDos = async (toSave) => {
-    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
+    await AsyncStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(toSave)
+    ); /* 로드한 투두리스트 저장 */
   };
 
   // toDo 로드
   const loadToDos = async () => {
     const s = await AsyncStorage.getItem(STORAGE_KEY);
-    setToDos(JSON.parse(s));
+    if(s) {
+      setToDos(JSON.parse(s));
+    }
   };
 
   // toDo추가
@@ -49,13 +54,13 @@ export default function App() {
     setText("");
   };
 
-  // toDo 지우기
+  // toDo 지우기 : 여기서 인자인 key는 투두리스트 item을 가져온 것이다 id로...
   const deleteToDo = async (key) => {
     Alert.alert("Delete To Do", "Are you sure?", [
       { text: "Canecl" },
       {
         text: "I'm Sure",
-        style:"destructive",
+        style: "destructive",
         onPress: () => {
           const newToDos = { ...toDos };
           delete newToDos[key];
@@ -128,7 +133,6 @@ const styles = StyleSheet.create({
   btnText: {
     fontSize: 35,
     fontWeight: "600",
-    // color: "white",
   },
   input: {
     backgroundColor: "white",
@@ -153,8 +157,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
   },
-  deleteBtn:{
-    fontSize:20  ,
-    color:"red",
-  }
+  deleteBtn: {
+    fontSize: 20,
+    color: "red",
+  },
 });
+
+
+/* 챌린지 */
+/* 1. 원래 있었던 탭 저장 */
+/* 2. 투두 완료 기능 */
+/* 3. text 수정 기능 */
