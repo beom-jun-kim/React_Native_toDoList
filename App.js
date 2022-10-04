@@ -8,6 +8,7 @@ import {
   TextInput /* React Native Components */,
   ScrollView /* React Native Components */,
   Alert /* React Native APIs */,
+  Platform /* React Native APIs */,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage"; /* expo SDK */
 import { theme } from "./colors";
@@ -23,7 +24,8 @@ export default function App() {
   }, []); /* 로드 된 투두리스트 기억 */
   const travel = () => setWorking(false); /* 누르지 않은 탭 */
   const work = () => setWorking(true); /* 누른 탭 */
-  const onChangeText = (payload) => setText(payload); /* 입력한 text를 payload라는 인자로 받았다 */
+  const onChangeText = (payload) =>
+    setText(payload); /* 입력한 text를 payload라는 인자로 받았다 */
   const saveToDos = async (toSave) => {
     await AsyncStorage.setItem(
       STORAGE_KEY,
@@ -34,7 +36,7 @@ export default function App() {
   // toDo 로드
   const loadToDos = async () => {
     const s = await AsyncStorage.getItem(STORAGE_KEY);
-    if(s) {
+    if (s) {
       setToDos(JSON.parse(s));
     }
   };
@@ -56,19 +58,29 @@ export default function App() {
 
   // toDo 지우기 : 여기서 인자인 key는 투두리스트 item을 가져온 것이다 id로...
   const deleteToDo = async (key) => {
-    Alert.alert("Delete To Do", "Are you sure?", [
-      { text: "Canecl" },
-      {
-        text: "I'm Sure",
-        style: "destructive",
-        onPress: () => {
-          const newToDos = { ...toDos };
-          delete newToDos[key];
-          setToDos(newToDos);
-          saveToDos(newToDos);
+    if (Platform.OS === "web") {
+      const ok = confirm("Do you want to delete this To Do?");
+      if (ok) {
+        const newToDos = { ...toDos };
+        delete newToDos[key];
+        setToDos(newToDos);
+        saveToDos(newToDos);
+      }
+    } else {
+      Alert.alert("Delete To Do", "Are you sure?", [
+        { text: "Canecl" },
+        {
+          text: "I'm Sure",
+          style: "destructive",
+          onPress: () => {
+            const newToDos = { ...toDos };
+            delete newToDos[key];
+            setToDos(newToDos);
+            saveToDos(newToDos);
+          },
         },
-      },
-    ]);
+      ]);
+    }
   };
 
   return (
@@ -162,7 +174,6 @@ const styles = StyleSheet.create({
     color: "red",
   },
 });
-
 
 /* 챌린지 */
 /* 1. 원래 있었던 탭 저장 */

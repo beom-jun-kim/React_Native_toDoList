@@ -1,23 +1,26 @@
 {
   "name": "todolistapp",
   "version": "1.0.0",
-  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "~1.17.3",
-    "expo": "~46.0.9",
+    "expo": "^46.0.14",
     "expo-status-bar": "~1.4.0",
+    "expo-updates": "~0.14.6",
     "react": "18.0.0",
-    "react-native": "0.69.5",
-    "react-native-vector-icons": "^9.2.0"
+    "react-dom": "^18.2.0",
+    "react-native": "0.69.6",
+    "react-native-vector-icons": "^9.2.0",
+    "react-native-web": "~0.18.7",
+    "expo-splash-screen": "~0.16.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.18.6"
   },
   "private": true
 }
