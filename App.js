@@ -13,7 +13,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage"; /* expo SDK */
 import { theme } from "./colors";
 
-const STORAGE_KEY = "@toDos"; /* 스토리지 key name */
+const STORAGE_KEY = "@toDos"; /* 스토리지 key namee */
 
 export default function App() {
   const [working, setWorking] = useState(true); /* 누른 탭 확인 */
